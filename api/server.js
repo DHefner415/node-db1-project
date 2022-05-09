@@ -1,7 +1,15 @@
-const express = require("express");
+const express = require('express')
+const accountRouter = require('./accounts/accounts-router')
 
-const server = express();
+const server = express()
 
-server.use(express.json());
+server.use(express.json())
+server.use('/api/accounts', accountRouter)
 
-module.exports = server;
+server.use('*', (req, res, next) => {//eslint-disable-line
+  res.status(404).json({
+    message: 'not found',
+  })
+})
+
+module.exports = server
