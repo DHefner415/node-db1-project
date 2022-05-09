@@ -27,8 +27,11 @@ router.post(
   checkAccountNameUnique,
   async (req, res, next) => {
     try {
-      const newAcct = await Accounts.create(req.body)
-      res.json(newAcct)
+      const newAcct = await Accounts.create({
+        name: req.body.name.trim(),
+        budget: req.body.budget,
+      })
+      res.status(201).json(newAcct)
     } catch (err) {
       next(err)
     }
@@ -52,8 +55,8 @@ router.put(
 
 router.delete('/:id', checkAccountId, async (req, res, next) => {
   try {
-    const deleted = await Accounts.deleteById(req.params.id)
-    res.json(deleted)
+    await Accounts.deleteById(req.params.id)
+    res.json(req.account)
   } catch (err) {
     next(err)
   }
